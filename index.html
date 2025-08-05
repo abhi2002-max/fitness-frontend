@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All-in-One Fitness App</title>
+</head>
+<body>
+    <h1>Fitness App Dashboard</h1>
+
+    <!-- Register Form -->
+    <h2>Register</h2>
+    <form id="registerForm">
+        Name: <input type="text" id="regName"><br>
+        Email: <input type="email" id="regEmail"><br>
+        Password: <input type="password" id="regPassword"><br>
+        <button type="submit">Register</button>
+    </form>
+
+    <!-- Login Form -->
+    <h2>Login</h2>
+    <form id="loginForm">
+        Email: <input type="email" id="loginEmail"><br>
+        Password: <input type="password" id="loginPassword"><br>
+        <button type="submit">Login</button>
+    </form>
+
+    <script>
+        const backendURL = 'https://evil-sloths-kneel.loca.lt'; // Updated LocalTunnel URL
+
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('regName').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+
+            const res = await fetch(`${backendURL}/register`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email, password })
+            });
+            alert(await res.text());
+        });
+
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            const res = await fetch(`${backendURL}/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+
+            if (res.status === 200) {
+                const data = await res.json();
+                alert('Login Successful. JWT Token: ' + data.token);
+            } else {
+                alert('Login Failed');
+            }
+        });
+    </script>
+</body>
+</html>
